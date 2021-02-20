@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:postammu/Adapter/cartAdapter.dart';
 import 'package:postammu/Components/AppDrawer.dart';
 import 'package:postammu/Models/mItemModel.dart';
@@ -22,16 +25,122 @@ class _HomeState extends State<Home> {
       key: _scaffoldKey,
         drawer: Theme(
           data: Theme.of(context).copyWith(
-            canvasColor: kBlueColor, //or any other color you want. e.g Colors.blue.withOpacity(0.5)
+            canvasColor: kDarkBlueColor, //or any other color you want. e.g Colors.blue.withOpacity(0.5)
           ),
           child: Drawer(
             child: ListView(
               children: <Widget>[
                 DrawerHeader(
-                  child: Text("Header"),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Text("Adi Nugraha - Shift 1",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Text(
+                  //   "Header"
+                  //   ,style:  GoogleFonts.questrial(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w300,
+                  //     color: kGreyColor
+                  // ),
+                  // ),
                 ),
                 ListTile(
-                  title: Text("Home"),
+                  title:
+                  new Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      SizedBox(height: 10),
+                      Text("Profile",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text("Absent",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text("Shift",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text("Master Items",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text("Settings",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text("Report",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                      SizedBox(height: 80),
+                      Text("Point of Sales",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text("By Tammu Roastery",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text("v1.0.0",
+                        style:  GoogleFonts.questrial(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300,
+                            color: kGreyColor
+                        ),
+                      ),
+
+                  ],),
+                  // Text(
+                  //   "Header"
+                  //   ,style:  GoogleFonts.questrial(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w300,
+                  //     color: kGreyColor
+                  //   ),
+                  // ),
                 )
               ],
             ),
@@ -76,6 +185,7 @@ class _HomeState extends State<Home> {
                     ),
                     new Expanded(
                       child: new Container(
+                        margin: EdgeInsets.only(top: 15),
                         child: _listCart(),
                       ),
                       flex: 7,
@@ -268,6 +378,7 @@ class _appBarMenu extends StatelessWidget {
 
 //Grid Items
 class _gridItemsCategory extends StatelessWidget{
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -283,8 +394,98 @@ class _gridItemsCategory extends StatelessWidget{
           crossAxisSpacing: 10.0,
         ),
         itemBuilder: (context, index) {
-          return  Container(
-            decoration: BoxDecoration(
+          return  new  GestureDetector(
+            onTap: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Stack(
+                      overflow: Overflow.visible,
+                      children: <Widget>[
+                        Positioned(
+                          right: -40.0,
+                          top: -40.0,
+                          child: InkResponse(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: CircleAvatar(
+                              child: Icon(Icons.close),
+                              backgroundColor: Colors.red,
+                            ),
+                          ),
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  style: GoogleFonts.questrial(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w300,
+                                      color: kGreyColor),
+                                  initialValue: items[index].name,
+                                  readOnly: true,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Item',
+                                  ),
+                                )
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                  child: TextFormField(
+                                    style: GoogleFonts.questrial(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w300,
+                                        color: kGreyColor),
+                                    decoration: const InputDecoration(
+                                      labelText: 'Qty *',
+                                    ),
+                                  )
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child:
+                                  MultiSelectDialogField(
+                                    items: items.map((e) => MultiSelectItem(e, e.name)).toList(),
+                                    listType: MultiSelectListType.CHIP,
+                                    onConfirm: (values) {
+                                      items = values[index];
+                                    },
+                                  ),
+                                  // TextFormField(
+                                  //   style: GoogleFonts.questrial(
+                                  //       fontSize: 14,
+                                  //       fontWeight: FontWeight.w300,
+                                  //       color: kGreyColor),
+                                  //   decoration: const InputDecoration(
+                                  //     labelText: 'Variasi *',
+                                  //   ),
+                                  // )
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RaisedButton(
+                                  child: Text("Add"),
+                                  onPressed: () {
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                    }
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+            child : Container(
+              decoration: BoxDecoration(
                 color: kWhiteColor,
                 borderRadius: BorderRadius.circular(5.0),
                 boxShadow: [
@@ -295,30 +496,31 @@ class _gridItemsCategory extends StatelessWidget{
                   ),
                 ],
 
-            ),
-            child: new Stack(
-              children: <Widget>[
-                new Positioned(
-                  right: 5.0,
-                  top: 10.0,
-                  child: new Image.asset(
-                        items[index].image,
-                          height: 151,
-                          width: 151,
+              ),
+              child: new Stack(
+                children: <Widget>[
+
+                  new Positioned(
+                    right: 5.0,
+                    top: 10.0,
+                    child: new Image.asset(
+                      items[index].image,
+                      height: 151,
+                      width: 151,
                     ),
 
-                ),
-                new Positioned(
-                  left: 20.0,
-                  bottom: 20.0,
-                  child: new Text(
-                      items[index].name,
-                    style: mItemsTitle
                   ),
-                )
-              ],
+                  new Positioned(
+                    left: 20.0,
+                    bottom: 20.0,
+                    child: new Text(
+                        items[index].name,
+                        style: mItemsTitle
+                    ),
+                  )
+                ],
+              ),
             ),
-
           );
         },
       ),
@@ -415,7 +617,6 @@ class _listCart extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -486,6 +687,7 @@ class _listCart extends StatelessWidget {
     );
   }
 }
+
 
 class _buttonPayment extends StatelessWidget {
   @override

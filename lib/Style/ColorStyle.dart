@@ -6,3 +6,4 @@ const kBlackColor = Color(0xFF000000);
 const kGreyColor = Color(0xFFCCCCCC);
 const kBlueColor = Color(0xFF2980B9);
 const kSeparatedColor = Color(0xFF7F8C8D);
+const kDarkBlueColor = Color(0xFF3C5CAA);
